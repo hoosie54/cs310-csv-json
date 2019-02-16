@@ -67,55 +67,28 @@ public class Converter {
             List<String[]> full = reader.readAll();
             Iterator<String[]> iterator = full.iterator();
             
-            // (this is an example): int score = Integer.parseInt(csvData.get(1)[2]);
             JSONObject json = new JSONObject();
             JSONArray colHeaders = new JSONArray();
             JSONArray rowHeaders = new JSONArray();
             JSONArray data = new JSONArray();
             
-            /*
-            int i = 0;
-            while ( iterator.hasNext() ) {
-                
-                String[] colHeadersCSV = iterator.next();
-                String[] rowHeadersCSV = iterator.next();
-                String[] dataCSV = iterator.next();
-            
-                for ( int j = 0; j < full.size(); j++ ){
-                    //colHeaders.add(colHeadersCSV[j]);
-                    //rowHeaders.add(rowHeadersCSV[j]);
-                    
-                    System.out.print(colHeadersCSV[j] + " ");
-                    
-                }
-                System.out.println("");
-                for ( int k =0; k < full.size(); k++){
-                    System.out.print(colHeadersCSV[k] + " ");
-                    System.out.println("");
-                }
-                
-                i++;
-                
-            }
-            */
+            int c = 0;
+            int r = 0;
             
             String[] colHeadersCSV = iterator.next();
-            String[] rowHeadersCSV = iterator.next();
-            String[] dataCSV = iterator.next();
-            for ( int i = 0; i < full.size()+1; i++ ){
+            for (int i = 0; i < colHeadersCSV.length; i++){
+                colHeaders.add(colHeadersCSV[i]);
+            }
+            
+            while (iterator.hasNext()){
                 
-                
-                for ( int j = 0; j < full.size()+1; j++ ){
-                  
-                    System.out.print(colHeadersCSV[j] + " ");
-                    
-                    System.out.print(rowHeadersCSV[j] + " ");
-                    
-                    System.out.print(dataCSV[j+1] + " ");
-                    
-                    System.out.println();
-                    
+                JSONArray ints = new JSONArray();
+                String[] rowCSV = iterator.next();
+                rowHeaders.add(rowCSV[r]);
+                for( int i = 1; i < rowCSV.length; i++ ){
+                    ints.add(Integer.valueOf(rowCSV[i]));
                 }
+                data.add(ints);
                 
             }
             
@@ -124,7 +97,6 @@ public class Converter {
             json.put("data", data);
             
             results = String.valueOf(json);
-            //results = json.toJSONString();
             
         }        
         catch(Exception e) { return e.toString(); }
